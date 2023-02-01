@@ -1,0 +1,20 @@
+{
+  "name": "create-exp",
+  "version": "0.0.1",
+  "description": "A tool to scaffold new jspsych experiments.",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "unbuild --stub"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/minimist": "^1.2.2",
+    "@types/node": "^18.11.18",
+    "@types/prompts": "^2.4.2",
+    "kolorist": "^1.6.0",
+    "minimist": "^1.2.7",
+    "prompts": "^2.4.2",
+    "validate-npm-package-name": "^5.0.0"
+  }
+}
