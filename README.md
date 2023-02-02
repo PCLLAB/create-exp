@@ -2,6 +2,8 @@
 
 Code mostly stolen from [`create-vite`](https://github.com/vitejs/vite/tree/main/packages/create-vite)
 
+Inspired by https://github.com/bjoluc/jspsych-builder, except we just use vite.
+
 ## Scaffold a New jsPsych Experiment.
 
 Make sure Node.js is installed.
@@ -64,6 +66,18 @@ pnpm dev
 node ./dist/index.mjs
 ```
 
-### Changesets
+### Versioning and Publishing
+
+We use changesets
 
 https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md
+
+```
+pnpm changeset
+```
+
+The `publish.yml` workflow will create pull request to version the package.
+
+Merging the pull request will cause an automatic publish to NPM.
+
+#### REMINDER npm token expires August 1, 2023
