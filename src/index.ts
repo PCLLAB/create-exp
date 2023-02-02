@@ -1,9 +1,9 @@
+import { blue, yellow } from "kolorist";
 import minimist from "minimist";
-import prompts from "prompts";
 import fs from "node:fs";
 import path from "node:path";
-import { yellow, blue } from "kolorist";
-
+import { fileURLToPath } from "node:url";
+import prompts from "prompts";
 import validatePackageName from "validate-npm-package-name";
 
 type Template = {
@@ -14,14 +14,14 @@ type Template = {
 
 const TEMPLATES: Template[] = [
   {
-    value: "js",
-    display: "Javascript (Default)",
-    color: yellow,
+    value: "ts",
+    display: "Typescript (Recommended)",
+    color: blue,
   },
   {
-    value: "ts",
-    display: "Typescript (For cool kids)",
-    color: blue,
+    value: "js",
+    display: "Javascript",
+    color: yellow,
   },
 ];
 
@@ -74,7 +74,7 @@ async function init() {
         {
           type: (_, { overwrite }) => {
             if (overwrite === false) {
-              throw new Error("Project scaffold cancelled.");
+              throw new Error("Overwrite cancelled.");
             }
             return null;
           },
@@ -118,8 +118,6 @@ async function init() {
     return;
   }
 
-  console.log(result);
-
   const projectName = getProjectName();
   const packageName = result.packageName ?? projectName;
   const template = result.template ?? argTemplate;
@@ -130,6 +128,68 @@ async function init() {
     emptyDir(targetDir);
   } else if (!fs.existsSync(root)) {
     fs.mkdirSync(root, { recursive: true });
+  }
+
+  const pkgInfo = pkgFromUserAgent(process.env.npm_config_user_agent);
+  const pkgManager = pkgInfo ? pkgInfo.name : "npm";
+
+  console.log(`\nScaffolding project in ${root}...`);
+
+  const templateDir = path.resolve(
+    fileURLToPath(import.meta.url),
+    "../..",
+    `template-${template}`
+  );
+
+  const files = fs.readdirSync(templateDir);
+
+  files.forEach((file) => {
+    if (file === "package.json") return;
+
+    copy(path.join(templateDir, file), path.join(root, file));
+  });
+
+  const pkg = JSON.parse(
+    fs.readFileSync(path.join(templateDir, `package.json`), "utf-8")
+  );
+
+  pkg.name = packageName;
+
+  fs.writeFileSync(
+    path.join(root, "package.json"),
+    JSON.stringify(pkg, null, 2)
+  );
+
+  const cdProjectName = path.relative(cwd, root);
+
+  console.log(`\nDone! Now run:\n`);
+  if (root !== cwd) {
+    console.log(
+      `  cd ${
+        cdProjectName.includes(" ") ? `"${cdProjectName}"` : cdProjectName
+      }`
+    );
+  }
+
+  console.log(`  ${pkgManager} install`);
+  console.log(`  ${pkgManager} run dev`);
+}
+
+function copy(src: string, dest: string) {
+  const stat = fs.statSync(src);
+  if (stat.isDirectory()) {
+    copyDir(src, dest);
+  } else {
+    fs.copyFileSync(src, dest);
+  }
+}
+
+function copyDir(srcDir: string, destDir: string) {
+  fs.mkdirSync(destDir, { recursive: true });
+  for (const file of fs.readdirSync(srcDir)) {
+    const srcFile = path.resolve(srcDir, file);
+    const destFile = path.resolve(destDir, file);
+    copy(srcFile, destFile);
   }
 }
 
@@ -158,6 +218,16 @@ function emptyDir(dir: string) {
     }
     fs.rmSync(path.resolve(dir, file), { recursive: true, force: true });
   }
+}
+
+function pkgFromUserAgent(userAgent: string | undefined) {
+  if (!userAgent) return undefined;
+  const pkgSpec = userAgent.split(" ")[0];
+  const pkgSpecArr = pkgSpec.split("/");
+  return {
+    name: pkgSpecArr[0],
+    version: pkgSpecArr[1],
+  };
 }
 
 init().catch((e) => console.error(e));

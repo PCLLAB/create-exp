@@ -1,14 +1,22 @@
 {
-  "name": "create-exp",
+  "name": "@pcllab/create-exp",
   "version": "0.0.1",
   "description": "A tool to scaffold new jspsych experiments.",
   "type": "module",
   "main": "index.js",
+  "bin": "index.js",
+  "files": [
+    "index.js",
+    "template-*",
+    "dist"
+  ],
   "scripts": {
     "dev": "unbuild --stub"
   },
   "license": "MIT",
+  "private": "false",
   "devDependencies": {
+    "@changesets/cli": "^2.26.0",
     "@types/minimist": "^1.2.2",
     "@types/node": "^18.11.18",
     "@types/prompts": "^2.4.2",
