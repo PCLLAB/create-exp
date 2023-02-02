@@ -11,7 +11,8 @@
     "dist"
   ],
   "scripts": {
-    "dev": "unbuild --stub"
+    "dev": "unbuild --stub",
+    "build": "unbuild"
   },
   "license": "MIT",
   "private": "false",
@@ -23,6 +24,7 @@
     "kolorist": "^1.6.0",
     "minimist": "^1.2.7",
     "prompts": "^2.4.2",
+    "unbuild": "^1.1.1",
     "validate-npm-package-name": "^5.0.0"
   }
 }
