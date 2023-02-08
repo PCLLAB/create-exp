@@ -9,6 +9,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: publish
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
