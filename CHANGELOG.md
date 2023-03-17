@@ -1,5 +1,11 @@
 # @pcllab/create-exp
 
+## 0.3.0
+
+### Minor Changes
+
+- df0e8f5: fix: actually fix gitignore not being included
+
 ## 0.2.0
 
 ### Minor Changes
