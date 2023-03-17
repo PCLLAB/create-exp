@@ -25,6 +25,10 @@ const TEMPLATES: Template[] = [
   },
 ];
 
+const renameFiles: Record<string, string | undefined> = {
+  _gitignore: ".gitignore",
+};
+
 const argv = minimist<{
   t?: string;
   template?: string;
@@ -146,7 +150,10 @@ async function init() {
   files.forEach((file) => {
     if (file === "package.json") return;
 
-    copy(path.join(templateDir, file), path.join(root, file));
+    copy(
+      path.join(templateDir, renameFiles[file] ?? file),
+      path.join(root, file)
+    );
   });
 
   const pkg = JSON.parse(
