@@ -151,8 +151,8 @@ async function init() {
     if (file === "package.json") return;
 
     copy(
-      path.join(templateDir, renameFiles[file] ?? file),
-      path.join(root, file)
+      path.join(templateDir, file),
+      path.join(root, renameFiles[file] ?? file)
     );
   });
 
