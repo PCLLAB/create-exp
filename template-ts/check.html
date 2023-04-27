@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/lightbulb.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check</title>
+    <link rel="stylesheet" href="/src/style.css" />
+    <style>
+      tbody > :nth-child(odd) {
+        @apply bg-gray-100;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="max-w-screen-sm mx-auto mt-20 rounded overflow-clip shadow-xl">
+      <h1 class="bg-yellow-600 text-white text-2xl font-semibold p-6">Check</h1>
+      <div class="p-6 space-y-4">
+        <p>
+          Make sure that the subject information is correct. <br />If not, click
+          "Back" and re-enter the information.
+        </p>
+        <table class="w-full text-left text-xl leading-10">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+
+        <div class="mt-6 text-center space-x-4">
+          <button
+            id="backBtn"
+            class="bg-cyan-500 text-white text-xl px-6 py-2 rounded-sm"
+          >
+            Back
+          </button>
+          <button
+            id="nextBtn"
+            class="bg-blue-500 text-white text-xl px-6 py-2 rounded-sm"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+
+      const tbody = document.getElementById("table-body");
+      urlParams.forEach((value, key) => {
+        const tr = document.createElement("tr");
+
+        const keyTd = document.createElement("td");
+        keyTd.textContent = key;
+        const valueTd = document.createElement("td");
+        valueTd.textContent = value;
+
+        tr.append(keyTd, valueTd);
+        tbody.append(tr);
+      });
+
+      const backBtn = document.getElementById("backBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      backBtn.addEventListener("click", () =>
+        window.location.assign("./begin.html")
+      );
+      nextBtn.addEventListener("click", () =>
+        window.location.assign(`./${window.location.search}`)
+      );
+    </script>
+  </body>
+</html>

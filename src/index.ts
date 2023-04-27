@@ -29,12 +29,25 @@ const renameFiles: Record<string, string | undefined> = {
   _gitignore: ".gitignore",
 };
 
+const optionalFiles: Record<string, AnswerKeys | undefined> = {
+  "begin.html": "labStart",
+  "check.html": "labStart",
+  "vite.config.js": "labStart",
+};
+
 const argv = minimist<{
   t?: string;
   template?: string;
 }>(process.argv.slice(2), { string: ["_"] });
 
 const cwd = process.cwd();
+
+type AnswerKeys =
+  | "targetDir"
+  | "overwrite"
+  | "packageName"
+  | "template"
+  | "labStart";
 
 async function init() {
   const argTemplate = argv.template || argv.t;
@@ -44,14 +57,10 @@ async function init() {
 
   let targetDir = argTargetDir || defaultTargetDir;
 
-  console.log(argTargetDir);
-
   const getProjectName = () =>
     targetDir === "." ? path.basename(cwd) : targetDir;
 
-  let result: prompts.Answers<
-    "targetDir" | "overwrite" | "packageName" | "template"
-  >;
+  let result: prompts.Answers<AnswerKeys>;
 
   try {
     result = await prompts(
@@ -110,6 +119,12 @@ async function init() {
             value: template.value,
           })),
         },
+        {
+          type: "confirm",
+          name: "labStart",
+          message:
+            "Include pages to manually assign conditions before the experiment?",
+        },
       ],
       {
         onCancel: () => {
@@ -149,6 +164,11 @@ async function init() {
 
   files.forEach((file) => {
     if (file === "package.json") return;
+
+    const includeFlag = optionalFiles[file];
+    if (includeFlag != null && result[includeFlag] !== true) {
+      return;
+    }
 
     copy(
       path.join(templateDir, file),

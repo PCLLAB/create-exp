@@ -3,7 +3,7 @@
     "target": "ES6",
     "useDefineForClassFields": true,
     "module": "ES6",
-    "lib": ["ES6", "DOM"],
+    "lib": ["ESNext", "DOM"],
     "moduleResolution": "Node",
     "strict": false,
     "resolveJsonModule": true,

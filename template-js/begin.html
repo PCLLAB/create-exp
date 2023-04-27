@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/lightbulb.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Begin</title>
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <div class="max-w-screen-sm mx-auto mt-20 rounded overflow-clip shadow-xl">
+      <h1 class="bg-blue-600 text-white text-2xl font-semibold p-6">
+        Enter Subject Information
+      </h1>
+      <form class="p-6" action="check.html" method="get">
+        <div id="fields" class="space-y-4"></div>
+        <button
+          type="submit"
+          class="bg-blue-500 text-white text-xl px-6 py-2 rounded-sm block mx-auto mt-6"
+        >
+          Start
+        </button>
+      </form>
+    </div>
+    <script>
+      const formFields = {
+        subNum: {
+          type: "input",
+          label: "Subject Number",
+          placeholder: "e.g. 1234",
+        },
+        session: {
+          type: "select",
+          label: "Session",
+          options: ["Standard", "Expanding", "Test"],
+        },
+        set: {
+          type: "select",
+          label: "Set",
+          options: ["A", "B"],
+        },
+        condition: {
+          type: "select",
+          label: "Condition",
+          options: ["Retrieval", "Study", "Recall"],
+        },
+      };
+
+      const fields = document.getElementById("fields");
+      Object.entries(formFields).forEach(([key, value]) => {
+        const group = document.createElement("div");
+        if (value.label) {
+          const label = document.createElement("label");
+          label.htmlFor = key;
+          label.textContent = value.label;
+          label.className = "inline-block mb-1";
+
+          group.append(label);
+        }
+
+        switch (value.type) {
+          case "select": {
+            const select = document.createElement("select");
+            select.id = key;
+            select.name = key;
+            select.className = "w-full";
+
+            value.options.forEach((opt) => {
+              const option = document.createElement("option");
+              option.value = opt;
+              option.textContent = opt;
+
+              select.append(option);
+            });
+
+            group.append(select);
+            break;
+          }
+          case "input": {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.placeholder = value.placeholder;
+            input.id = key;
+            input.name = key;
+            input.className = "w-full";
+
+            group.append(input);
+          }
+        }
+
+        fields.append(group);
+      });
+    </script>
+  </body>
+</html>

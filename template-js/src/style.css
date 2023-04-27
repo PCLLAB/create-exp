@@ -4,7 +4,12 @@
 
 @layer base {
   input,
-  textarea {
-    @apply border rounded px-1;
+  textarea,
+  select {
+    @apply border rounded px-2;
+  }
+  input,
+  select {
+    @apply h-10;
   }
 }
