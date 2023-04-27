@@ -1,5 +1,11 @@
 # @pcllab/create-exp
 
+## 0.4.0
+
+### Minor Changes
+
+- e1c2005: Add optional lab start pages to template
+
 ## 0.3.0
 
 ### Minor Changes

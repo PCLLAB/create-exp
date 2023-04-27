@@ -1,6 +1,6 @@
 {
   "name": "@pcllab/create-exp",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A tool to scaffold new jspsych experiments.",
   "type": "module",
   "main": "index.js",
